@@ -1,2 +1,3 @@
 This repository is currently under development.
-Features and documentation will be updated soon—stay tuned!
+Completed machine learning models
+currently developing deep ensemble networks with attention mechanism.
