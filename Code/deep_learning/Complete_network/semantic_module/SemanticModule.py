@@ -13,19 +13,43 @@ class SemanticModule(nn.Module):
     def __init__(self, embedding_dim, output_features = 100):
         super().__init__()
         
-        self.conv1 = nn.Conv1d(in_channels, #number of input features
-                               out_channels, # number of output filters
-                               cnn_kernel_size)
+        self.conv1 = nn.Conv1d(in_channels = 1, # single channel input
+                               out_channels = 16, # number of  filters
+                               kernel_size = 5, #kernel size need to experiment with 2,4,5,7
+                               padding = 2 
+                               # padding  = 0 valid convolution no padding output shrinks
+                               # padding = (kernel_size -1)/2 -> to keep output sequence length as input 
+                               # here stride = 1
+                               )
         
-        self.batch_norm - nn.BatchNorm1d(batch_norm_input_channels)
+        self.batch_norm1 = nn.BatchNorm1d(16) # normalizes the output layer , basically keeps activations(features) within stable range during training
         
-        self.pooling_layer = nn.MaxPool1d(pooling_layer_kernelsize)
+        self.pooling_layer = nn.MaxPool1d(kernel_size = 3) # generally if kernel size = 3 then stride is also 3
         
-        self.conv2 = nn.Conv2d(out_channels = 32)
+        self.conv2 = nn.Conv2d(
+            in_channels = 16, #from first block number of output_features
+            out_channels = 32,
+            kernel_size = 5,
+            padding = 2
+            )
         
-        self.attention = nn.MultiheadAttention()
+        self.batch_norm2 = nn.BatchNorm1d(32)
+        self.pool2 = nn.MaxPool1d(kernel_size = 3)
         
-        self.lstm = nn.LSTM(lstm_input, lstm_hidden_size, lstm_num_layers, bidirectional = True)
+        # birectional lstm
+        
+        self.lstm = nn.LSTM(
+            input_size = 32, # from conv2 ouput channels
+            hidden_size = 32, # 32 hidden_units
+            num_layers =1,
+            batch_first = True,
+            bidirectional = True # bilstm outputs 64 features
+        )
+        
+        #ading attention layer for explanability
+        self.attention = nn.AttentionLayer(hidden_size = 64)
+        
+        self.fc = nn.Linear(64, output_features)
         
         self.attention_weights = None
         
