@@ -24,7 +24,7 @@ class SemanticModule(nn.Module):
         
         self.batch_norm1 = nn.BatchNorm1d(16) # normalizes the output layer , basically keeps activations(features) within stable range during training
         
-        self.pooling_layer = nn.MaxPool1d(kernel_size = 3) # generally if kernel size = 3 then stride is also 3
+        self.pool1 = nn.MaxPool1d(kernel_size = 3) # generally if kernel size = 3 then stride is also 3
         
         self.conv2 = nn.Conv2d(
             in_channels = 16, #from first block number of output_features
@@ -55,15 +55,30 @@ class SemanticModule(nn.Module):
         
     def forward(self,x):
         
-        features = self.conv1(x)
         
-        features = self.batch_norm(features)
+        batch_size = x.size(0)
         
-        features = self.pooling_layer(features)
+        x = x.unsqueeze(1) #reshape for conv1d
         
-        features = self.attention(features)
+        # 1st convoultional layer
+        x = self.conv1(x)
+        x = F.relu(x)
+        x = self.batch_norm1(x)
+        x = self.pool1(x)
         
-        features. self.lstm(features)
+        # 2nd convoultional layer 
+        x = self.conv2(x)
+        x = F.relu(x)
+        x = self.batch_norm2(x)
+        x = self.poool2(x)
+        
+        # lstm : (batch,seq_len, features)
+        
+        
+        
+        
+        
+        
         
 
         
