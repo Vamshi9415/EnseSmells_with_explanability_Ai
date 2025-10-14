@@ -1,6 +1,7 @@
 import torch 
 import torch.nn as nn
 import torch.nn.functional as F 
+from AttentionLayer import AttentionLayer
 
 class SemanticModule(nn.Module):
     '''
@@ -26,7 +27,7 @@ class SemanticModule(nn.Module):
         
         self.pool1 = nn.MaxPool1d(kernel_size = 3) # generally if kernel size = 3 then stride is also 3
         
-        self.conv2 = nn.Conv2d(
+        self.conv2 = nn.Conv1d(
             in_channels = 16, #from first block number of output_features
             out_channels = 32,
             kernel_size = 5,
@@ -47,7 +48,7 @@ class SemanticModule(nn.Module):
         )
         
         #ading attention layer for explanability
-        self.attention = nn.AttentionLayer(hidden_size = 64)
+        self.attention = nn.AttentionLayer(embed_size = 64)
         
         self.fc = nn.Linear(64, output_features)
         
