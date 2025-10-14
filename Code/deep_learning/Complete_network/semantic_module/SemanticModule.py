@@ -71,9 +71,31 @@ class SemanticModule(nn.Module):
         x = self.conv2(x)
         x = F.relu(x)
         x = self.batch_norm2(x)
-        x = self.poool2(x)
+        x = self.pool2(x)
         
+        x =x.transpose(1,2) #(batch_size,seq_len,32)
         # lstm : (batch,seq_len, features)
+        
+        lstm_out, (hidden,cell) = self.lstm(x)
+        #lstm_out = (batch, seq_len, 64)
+        
+        # APPLY ATTENTION (learns which parts of sequence are important)
+        attended_output, attention_weights = self.attention(lstm_out)
+        # attended_output: (batch, 64)
+        # attention_weights: (batch, seq_len) - shows important code positions
+        
+        # Store for explainability
+        self.attention_weights = attention_weights
+        
+        # Project to output dimension
+        features = self.fc(attended_output)  # (batch, 100)
+        
+        return features, attention_weights
+        
+        
+        
+        
+        
         
         
         
