@@ -14,7 +14,7 @@ class AttentionLayer(nn.Module):
         super().__init__()
         
         
-        self.embed_size = 
+        self.embed_size = embed_size
         #define linear transformations for Q,K,V
         self.query = nn.Linear(embed_size, embed_size)
         self.key = nn.Linear(embed_size,embed_size)

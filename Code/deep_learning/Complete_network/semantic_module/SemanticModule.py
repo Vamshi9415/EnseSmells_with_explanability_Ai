@@ -48,7 +48,7 @@ class SemanticModule(nn.Module):
         )
         
         #ading attention layer for explanability
-        self.attention = nn.AttentionLayer(embed_size = 64)
+        self.attention = AttentionLayer(embed_size = 64)
         
         self.fc = nn.Linear(64, output_features)
         
@@ -91,18 +91,7 @@ class SemanticModule(nn.Module):
         features = self.fc(attended_output)  # (batch, 100)
         
         return features, attention_weights
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+          
 
         
         
