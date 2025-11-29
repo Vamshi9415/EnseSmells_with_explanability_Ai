@@ -1,7 +1,15 @@
 import torch 
 import torch.nn as nn
 import torch.nn.functional as F 
-from AttentionLayer import AttentionLayer
+import os
+import sys
+# Add path for imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+complete_network_dir = os.path.dirname(current_dir)
+if complete_network_dir not in sys.path:
+    sys.path.insert(0, complete_network_dir)
+
+from semantic_module.AttentionLayer import AttentionLayer
 
 class SemanticModule(nn.Module):
     '''
