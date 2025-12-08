@@ -4,67 +4,48 @@ import torch.nn.functional as F
 
 class AttentionLayer(nn.Module):
     '''
-    self attention mechanism for bilstm outputs
-    
+    Multi-Head Self-Attention Mechanism
+    Replaces simple linear attention with standard Transformer-style attention.
     '''
     
-    
-    
-    def __init__(self, embed_size):
+    def __init__(self, embed_size, num_heads=4):
         super().__init__()
-        
-        
         self.embed_size = embed_size
-        #define linear transformations for Q,K,V
-        self.query = nn.Linear(embed_size, embed_size)
-        self.key = nn.Linear(embed_size,embed_size)
-        self.value = nn.Linear(embed_size,embed_size)
         
-        self.scale = torch.sqrt(torch.FloatTensor([embed_size]))
+        # Multi-Head Attention
+        # batch_first=True ensures input/output are (batch, seq, feature)
+        self.mha = nn.MultiheadAttention(embed_dim=embed_size, num_heads=num_heads, batch_first=True)
+        
+        # Layer Normalization for stability
+        self.norm = nn.LayerNorm(embed_size)
         
     def forward(self, x):
         '''
-        here x is the ouput from the lstm layer 
-        which is in the form of (batch_size, time_Steps, units) when return_Sewunces are true
-        batch_size - number of sequences processed at once
-        time_Steps - number of embeddings in each sequence like how many embedding vectors 
-        units - number of lstm units where each unit represents one dimension of the hidden state at each time step
-        (batch_size, time_steps, embedding_dim) -> input shape
-                       ||
-                       ||
-                 -- LSTM layer --
-                       ||
-                       ||
-          (batch_size, tim_steps, units)  -> output shape
-          
-        we need to generate the Q,K,V matrices
-         Returns:
-            attended_output: (batch, hidden_size) weighted representation
-            attention_weights: (batch, seq_len) importance scores
+        Args:
+            x: (batch_size, seq_len, embed_size) - Output from BiLSTM
+            
+        Returns:
+            pooled_output: (batch, embed_size) - Aggregated vector for the sequence
+            attn_weights: (batch, seq_len) - Average attention weights across heads
         '''
+        # Self-attention: Query, Key, and Value are all 'x'
+        # attn_output shape: (batch, seq_len, embed_size)
+        # attn_weights shape: (batch, seq_len, seq_len) -> We only need weights relative to the sequence
+        attn_output, attn_weights_matrix = self.mha(x, x, x)
         
+        # Residual Connection + Normalization (Standard Transformer block practice)
+        x = self.norm(x + attn_output)
         
+        # POOLING:
+        # Instead of just taking the last state, we take the mean of the attention-enriched sequence
+        # This creates a single vector representation for the whole code snippet
+        pooled_output = x.mean(dim=1) 
         
-        Q = self.query(x)
-        K = self.key(x)
-        V = self.value(x)
+        # For visualization/explainability:
+        # We average the attention weights across all heads and all target tokens
+        # to get a single "importance score" per token in the sequence.
+        # attn_weights_matrix is (batch, num_heads, target_len, src_len) or (batch, target_len, src_len)
+        # We simplify to (batch, seq_len) for visualization
+        avg_attn_weights = attn_weights_matrix.mean(dim=1) 
         
-        # calculating attetnion_Scores Q x K^T
-        
-        attention_scores = torch.matmul(Q, K.transpose(-2,-1))/ (self.scale.to(x.device)) 
-
-        # (batch_size, seq_len, embed_dim) K.transpose(-2, -1) → shape (batch_size, embed_dim, seq_len)
-        #Without scaling, dot products can be large, making softmax very peaky and gradients unstable.
-        #.to(x.device) ensures self.scale is on the same device as the input (CPU or GPU), so no device mismatch occurs.
-
-        #applying softmax function
-        
-        attention_weights = F.softmax(attention_scores.mean(dim = 1), dim = -1)
-        
-        # Apply attention to values
-        attention_weights_expanded = attention_weights.unsqueeze(1)  # (batch, 1, seq_len)
-        attended_output = torch.matmul(attention_weights_expanded, V).squeeze(1)  # (batch, hidden_size)
-        
-        return attended_output, attention_weights
-        
-        
+        return pooled_output, avg_attn_weights

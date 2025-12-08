@@ -213,7 +213,7 @@ def main():
     # CONFIGURATION
     # -------------------------------------------------------
     base_data_dir = r"D:\0_final_project\DeepEnsemble\dataset-source\embedding-dataset\combine-Embedding&Metrics"
-    base_save_root = r"D:\0_final_project\DeepEnsemble\Code\deep_learning\Complete_network\Training_Module"
+    base_save_root = r"D:\0_final_project\Git_branches\EnseSmells_with_explanability_Ai\Code\deep_learning\Complete_network\Training_Module"
     
     config_params = {
         'batch_size': 32,
