@@ -1,0 +1,33 @@
+{
+    "LongMethod_CodeBERT": {
+        "config_id": 15,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 128,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 24,
+            "attention_dim": 32,
+            "hidden_dim": 64
+        },
+        "classifier": {
+            "hidden_layers": [
+                64
+            ],
+            "dropout_rates": [
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.8112110574813515,
+            "recall": 0.7989690721649485,
+            "f1": 0.802847990524644,
+            "mcc": 0.7804536625491583,
+            "auc": 0.9740069073458459
+        },
+        "training_time": 5.663329839706421
+    }
+}

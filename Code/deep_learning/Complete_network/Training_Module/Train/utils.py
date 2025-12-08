@@ -21,7 +21,7 @@ def save_json(data: Dict[str, Any], filepath: str):
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
     with open(filepath, 'w') as f:
         json.dump(data, f, indent=4)
-    print(f"✓ Saved JSON to {filepath}")
+    print(f"[OK] Saved JSON to {filepath}")
 
 
 def load_json(filepath: str) -> Dict[str, Any]:
@@ -93,7 +93,7 @@ def plot_training_history(history: Dict, save_path: str = None):
     
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
-        print(f"✓ Training history plot saved to {save_path}")
+        print(f"[OK] Training history plot saved to {save_path}")
     
    # plt.show()
 
@@ -116,7 +116,7 @@ def plot_confusion_matrix(cm, save_path: str = None):
     
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
-        print(f"✓ Confusion matrix plot saved to {save_path}")
+        print(f"[OK] Confusion matrix plot saved to {save_path}")
     
     # plt.show()
 
@@ -145,5 +145,5 @@ def create_experiment_dir(base_dir: str, experiment_name: str = None) -> str:
     os.makedirs(os.path.join(exp_dir, 'logs'), exist_ok=True)
     os.makedirs(os.path.join(exp_dir, 'plots'), exist_ok=True)
     
-    print(f"✓ Created experiment directory: {exp_dir}")
+    print(f"[OK] Created experiment directory: {exp_dir}")
     return exp_dir

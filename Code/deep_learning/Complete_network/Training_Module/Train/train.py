@@ -126,7 +126,7 @@ def main():
     try:
         plot_training_history(history, plot_path)
     except Exception as e:
-        print(f"⚠ Could not generate plot: {e}")
+        print(f"[WARNING] Could not generate plot: {e}")
     
     # Evaluate on test set
     print("\n" + "="*80)
@@ -136,7 +136,7 @@ def main():
     # Load best model
     checkpoint = torch.load(os.path.join(config.save_dir, 'best_model.pth'))
     model.load_state_dict(checkpoint['model_state_dict'])
-    print(f"✓ Loaded best model from epoch {checkpoint['epoch'] + 1}")
+    print(f"[OK] Loaded best model from epoch {checkpoint['epoch'] + 1}")
     print(f"  Validation F1: {checkpoint['val_f1']:.4f}\n")
     
     test_loss, test_metrics = validate(model, test_loader, criterion, device)

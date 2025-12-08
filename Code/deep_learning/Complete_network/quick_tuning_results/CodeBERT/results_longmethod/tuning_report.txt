@@ -1,0 +1,131 @@
+====================================================================================================
+HYPERPARAMETER TUNING REPORT
+Smell Type: LongMethod
+Embedding Type: CodeBERT
+====================================================================================================
+
+TOP 10 CONFIGURATIONS:
+----------------------------------------------------------------------------------------------------
+
+1. Config ID 15 - F1: 0.8028
+   Semantic: Conv1=16, Conv2=32, LSTM=32, KernelSize=5
+   Structural: Output=24, AttnDim=32, Hidden=64
+   Classifier: Layers=[64], Dropout=[0.3]
+   Metrics: Prec=0.8112, Rec=0.7990, MCC=0.7805, AUC=0.9740
+   Training Time: 5.7s
+
+2. Config ID 2 - F1: 0.7769
+   Semantic: Conv1=16, Conv2=32, LSTM=32, KernelSize=5
+   Structural: Output=24, AttnDim=32, Hidden=64
+   Classifier: Layers=[128, 64], Dropout=[0.4, 0.3]
+   Metrics: Prec=0.8424, Rec=0.7216, MCC=0.7553, AUC=0.9743
+   Training Time: 7.8s
+
+3. Config ID 18 - F1: 0.7752
+   Semantic: Conv1=16, Conv2=32, LSTM=32, KernelSize=5
+   Structural: Output=32, AttnDim=64, Hidden=128
+   Classifier: Layers=[64], Dropout=[0.3]
+   Metrics: Prec=0.7681, Rec=0.7835, MCC=0.7480, AUC=0.9685
+   Training Time: 5.9s
+
+4. Config ID 13 - F1: 0.7747
+   Semantic: Conv1=16, Conv2=32, LSTM=32, KernelSize=5
+   Structural: Output=24, AttnDim=32, Hidden=64
+   Classifier: Layers=[64, 32], Dropout=[0.3, 0.2]
+   Metrics: Prec=0.8003, Rec=0.7526, MCC=0.7492, AUC=0.9736
+   Training Time: 7.3s
+
+5. Config ID 7 - F1: 0.7713
+   Semantic: Conv1=32, Conv2=64, LSTM=64, KernelSize=5
+   Structural: Output=24, AttnDim=32, Hidden=64
+   Classifier: Layers=[64, 32], Dropout=[0.3, 0.2]
+   Metrics: Prec=0.7930, Rec=0.7629, MCC=0.7480, AUC=0.9743
+   Training Time: 4.8s
+
+6. Config ID 9 - F1: 0.7679
+   Semantic: Conv1=32, Conv2=64, LSTM=64, KernelSize=5
+   Structural: Output=24, AttnDim=32, Hidden=64
+   Classifier: Layers=[64], Dropout=[0.3]
+   Metrics: Prec=0.7309, Rec=0.8093, MCC=0.7393, AUC=0.9747
+   Training Time: 6.2s
+
+7. Config ID 12 - F1: 0.7649
+   Semantic: Conv1=32, Conv2=64, LSTM=64, KernelSize=5
+   Structural: Output=32, AttnDim=64, Hidden=128
+   Classifier: Layers=[64], Dropout=[0.3]
+   Metrics: Prec=0.7920, Rec=0.7474, MCC=0.7401, AUC=0.9676
+   Training Time: 5.8s
+
+8. Config ID 1 - F1: 0.7647
+   Semantic: Conv1=16, Conv2=32, LSTM=32, KernelSize=5
+   Structural: Output=24, AttnDim=32, Hidden=64
+   Classifier: Layers=[64, 32], Dropout=[0.3, 0.2]
+   Metrics: Prec=0.8615, Rec=0.6907, MCC=0.7464, AUC=0.9732
+   Training Time: 11.6s
+
+9. Config ID 5 - F1: 0.7573
+   Semantic: Conv1=16, Conv2=32, LSTM=32, KernelSize=5
+   Structural: Output=32, AttnDim=64, Hidden=128
+   Classifier: Layers=[128, 64], Dropout=[0.4, 0.3]
+   Metrics: Prec=0.8514, Rec=0.6959, MCC=0.7406, AUC=0.9690
+   Training Time: 6.1s
+
+10. Config ID 6 - F1: 0.7522
+   Semantic: Conv1=16, Conv2=32, LSTM=32, KernelSize=5
+   Structural: Output=32, AttnDim=64, Hidden=128
+   Classifier: Layers=[64], Dropout=[0.3]
+   Metrics: Prec=0.7727, Rec=0.7577, MCC=0.7294, AUC=0.9724
+   Training Time: 6.2s
+
+====================================================================================================
+BEST CONFIGURATION DETAILS:
+====================================================================================================
+
+Config ID: 15
+
+Semantic Module:
+  conv1_filters: 16
+  conv2_filters: 32
+  lstm_hidden: 32
+  output_features: 128
+  kernel_size: 5
+
+Structural Module:
+  output_features: 24
+  attention_dim: 32
+  hidden_dim: 64
+
+Classifier:
+  hidden_layers: [64]
+  dropout_rates: [0.3]
+
+Metrics:
+  precision: 0.8112
+  recall: 0.7990
+  f1: 0.8028
+  mcc: 0.7805
+  auc: 0.9740
+
+====================================================================================================
+METRICS COMPARISON (All Configurations):
+====================================================================================================
+ID    | F1       | Prec     | Rec      | MCC      | AUC      | Time(s) 
+----------------------------------------------------------------------------------------------------
+15    | 0.8028   | 0.8112   | 0.7990   | 0.7805   | 0.9740   | 5.7     
+2     | 0.7769   | 0.8424   | 0.7216   | 0.7553   | 0.9743   | 7.8     
+18    | 0.7752   | 0.7681   | 0.7835   | 0.7480   | 0.9685   | 5.9     
+13    | 0.7747   | 0.8003   | 0.7526   | 0.7492   | 0.9736   | 7.3     
+7     | 0.7713   | 0.7930   | 0.7629   | 0.7480   | 0.9743   | 4.8     
+9     | 0.7679   | 0.7309   | 0.8093   | 0.7393   | 0.9747   | 6.2     
+12    | 0.7649   | 0.7920   | 0.7474   | 0.7401   | 0.9676   | 5.8     
+1     | 0.7647   | 0.8615   | 0.6907   | 0.7464   | 0.9732   | 11.6    
+5     | 0.7573   | 0.8514   | 0.6959   | 0.7406   | 0.9690   | 6.1     
+6     | 0.7522   | 0.7727   | 0.7577   | 0.7294   | 0.9724   | 6.2     
+10    | 0.7486   | 0.7226   | 0.7784   | 0.7177   | 0.9711   | 6.4     
+4     | 0.7454   | 0.7551   | 0.7577   | 0.7204   | 0.9699   | 6.0     
+17    | 0.7379   | 0.6579   | 0.8402   | 0.7084   | 0.9672   | 4.9     
+3     | 0.7370   | 0.7337   | 0.7526   | 0.7083   | 0.9728   | 7.8     
+11    | 0.7266   | 0.7882   | 0.6804   | 0.7010   | 0.9674   | 5.4     
+16    | 0.7217   | 0.8386   | 0.6546   | 0.7071   | 0.9701   | 6.1     
+14    | 0.7031   | 0.7191   | 0.7423   | 0.6823   | 0.9703   | 5.3     
+8     | 0.6916   | 0.8034   | 0.6340   | 0.6759   | 0.9576   | 4.9     

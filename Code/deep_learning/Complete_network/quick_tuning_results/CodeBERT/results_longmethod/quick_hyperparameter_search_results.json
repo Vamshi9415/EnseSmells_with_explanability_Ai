@@ -1,0 +1,584 @@
+[
+    {
+        "config_id": 1,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 24,
+            "attention_dim": 32,
+            "hidden_dim": 64
+        },
+        "classifier": {
+            "hidden_layers": [
+                64,
+                32
+            ],
+            "dropout_rates": [
+                0.3,
+                0.2
+            ]
+        },
+        "metrics": {
+            "precision": 0.8614617940199336,
+            "recall": 0.6907216494845361,
+            "f1": 0.7647001079807598,
+            "mcc": 0.7463807739363251,
+            "auc": 0.973243736175607
+        },
+        "training_time": 11.593288898468018
+    },
+    {
+        "config_id": 2,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 24,
+            "attention_dim": 32,
+            "hidden_dim": 64
+        },
+        "classifier": {
+            "hidden_layers": [
+                128,
+                64
+            ],
+            "dropout_rates": [
+                0.4,
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.8424268878219119,
+            "recall": 0.7216494845360825,
+            "f1": 0.7769268774703557,
+            "mcc": 0.7552932588150986,
+            "auc": 0.9742526743328719
+        },
+        "training_time": 7.7733025550842285
+    },
+    {
+        "config_id": 3,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 24,
+            "attention_dim": 32,
+            "hidden_dim": 64
+        },
+        "classifier": {
+            "hidden_layers": [
+                64
+            ],
+            "dropout_rates": [
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.7337248152272957,
+            "recall": 0.7525773195876289,
+            "f1": 0.7370370370370369,
+            "mcc": 0.7083159679652626,
+            "auc": 0.9728233452767465
+        },
+        "training_time": 7.8278656005859375
+    },
+    {
+        "config_id": 4,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 32,
+            "attention_dim": 64,
+            "hidden_dim": 128
+        },
+        "classifier": {
+            "hidden_layers": [
+                64,
+                32
+            ],
+            "dropout_rates": [
+                0.3,
+                0.2
+            ]
+        },
+        "metrics": {
+            "precision": 0.755064935064935,
+            "recall": 0.7577319587628866,
+            "f1": 0.7454178316247282,
+            "mcc": 0.7203961110511183,
+            "auc": 0.9698870765370138
+        },
+        "training_time": 6.02087664604187
+    },
+    {
+        "config_id": 5,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 32,
+            "attention_dim": 64,
+            "hidden_dim": 128
+        },
+        "classifier": {
+            "hidden_layers": [
+                128,
+                64
+            ],
+            "dropout_rates": [
+                0.4,
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.8514030612244898,
+            "recall": 0.6958762886597938,
+            "f1": 0.7572861920688008,
+            "mcc": 0.7405791494631848,
+            "auc": 0.9690462947392928
+        },
+        "training_time": 6.133790016174316
+    },
+    {
+        "config_id": 6,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 32,
+            "attention_dim": 64,
+            "hidden_dim": 128
+        },
+        "classifier": {
+            "hidden_layers": [
+                64
+            ],
+            "dropout_rates": [
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.7727027027027027,
+            "recall": 0.7577319587628866,
+            "f1": 0.7521732258574363,
+            "mcc": 0.7293622538766739,
+            "auc": 0.9723900192733058
+        },
+        "training_time": 6.159297466278076
+    },
+    {
+        "config_id": 7,
+        "semantic": {
+            "conv1_filters": 32,
+            "conv2_filters": 64,
+            "lstm_hidden": 64,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 24,
+            "attention_dim": 32,
+            "hidden_dim": 64
+        },
+        "classifier": {
+            "hidden_layers": [
+                64,
+                32
+            ],
+            "dropout_rates": [
+                0.3,
+                0.2
+            ]
+        },
+        "metrics": {
+            "precision": 0.7930402930402931,
+            "recall": 0.7628865979381443,
+            "f1": 0.7713465481886534,
+            "mcc": 0.7479573988589177,
+            "auc": 0.9743496876172244
+        },
+        "training_time": 4.790543794631958
+    },
+    {
+        "config_id": 8,
+        "semantic": {
+            "conv1_filters": 32,
+            "conv2_filters": 64,
+            "lstm_hidden": 64,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 24,
+            "attention_dim": 32,
+            "hidden_dim": 64
+        },
+        "classifier": {
+            "hidden_layers": [
+                128,
+                64
+            ],
+            "dropout_rates": [
+                0.4,
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.8033769063180828,
+            "recall": 0.634020618556701,
+            "f1": 0.6915704349562382,
+            "mcc": 0.6759345477818206,
+            "auc": 0.9576310649471601
+        },
+        "training_time": 4.946324825286865
+    },
+    {
+        "config_id": 9,
+        "semantic": {
+            "conv1_filters": 32,
+            "conv2_filters": 64,
+            "lstm_hidden": 64,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 24,
+            "attention_dim": 32,
+            "hidden_dim": 64
+        },
+        "classifier": {
+            "hidden_layers": [
+                64
+            ],
+            "dropout_rates": [
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.7308558558558558,
+            "recall": 0.8092783505154639,
+            "f1": 0.7678673938002296,
+            "mcc": 0.7393148510335883,
+            "auc": 0.9747248056500537
+        },
+        "training_time": 6.1602256298065186
+    },
+    {
+        "config_id": 10,
+        "semantic": {
+            "conv1_filters": 32,
+            "conv2_filters": 64,
+            "lstm_hidden": 64,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 32,
+            "attention_dim": 64,
+            "hidden_dim": 128
+        },
+        "classifier": {
+            "hidden_layers": [
+                64,
+                32
+            ],
+            "dropout_rates": [
+                0.3,
+                0.2
+            ]
+        },
+        "metrics": {
+            "precision": 0.7225765306122449,
+            "recall": 0.7783505154639175,
+            "f1": 0.748595264384738,
+            "mcc": 0.7176593231139288,
+            "auc": 0.971102976367564
+        },
+        "training_time": 6.38042426109314
+    },
+    {
+        "config_id": 11,
+        "semantic": {
+            "conv1_filters": 32,
+            "conv2_filters": 64,
+            "lstm_hidden": 64,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 32,
+            "attention_dim": 64,
+            "hidden_dim": 128
+        },
+        "classifier": {
+            "hidden_layers": [
+                128,
+                64
+            ],
+            "dropout_rates": [
+                0.4,
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.7881944444444444,
+            "recall": 0.6804123711340206,
+            "f1": 0.7266149553913603,
+            "mcc": 0.7009770373463498,
+            "auc": 0.9673906013530119
+        },
+        "training_time": 5.40587306022644
+    },
+    {
+        "config_id": 12,
+        "semantic": {
+            "conv1_filters": 32,
+            "conv2_filters": 64,
+            "lstm_hidden": 64,
+            "output_features": 100,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 32,
+            "attention_dim": 64,
+            "hidden_dim": 128
+        },
+        "classifier": {
+            "hidden_layers": [
+                64
+            ],
+            "dropout_rates": [
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.7919751612132792,
+            "recall": 0.7474226804123711,
+            "f1": 0.7649182713837885,
+            "mcc": 0.7400951146815642,
+            "auc": 0.9676493034446183
+        },
+        "training_time": 5.784000635147095
+    },
+    {
+        "config_id": 13,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 128,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 24,
+            "attention_dim": 32,
+            "hidden_dim": 64
+        },
+        "classifier": {
+            "hidden_layers": [
+                64,
+                32
+            ],
+            "dropout_rates": [
+                0.3,
+                0.2
+            ]
+        },
+        "metrics": {
+            "precision": 0.8003001200480192,
+            "recall": 0.7525773195876289,
+            "f1": 0.7747252747252747,
+            "mcc": 0.7492352537972121,
+            "auc": 0.9736253217607265
+        },
+        "training_time": 7.261117458343506
+    },
+    {
+        "config_id": 14,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 128,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 24,
+            "attention_dim": 32,
+            "hidden_dim": 64
+        },
+        "classifier": {
+            "hidden_layers": [
+                128,
+                64
+            ],
+            "dropout_rates": [
+                0.4,
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.7190584287406238,
+            "recall": 0.7422680412371134,
+            "f1": 0.7031042128603104,
+            "mcc": 0.6823117495392772,
+            "auc": 0.9703009998835841
+        },
+        "training_time": 5.344221591949463
+    },
+    {
+        "config_id": 15,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 128,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 24,
+            "attention_dim": 32,
+            "hidden_dim": 64
+        },
+        "classifier": {
+            "hidden_layers": [
+                64
+            ],
+            "dropout_rates": [
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.8112110574813515,
+            "recall": 0.7989690721649485,
+            "f1": 0.802847990524644,
+            "mcc": 0.7804536625491583,
+            "auc": 0.9740069073458459
+        },
+        "training_time": 5.663329839706421
+    },
+    {
+        "config_id": 16,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 128,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 32,
+            "attention_dim": 64,
+            "hidden_dim": 128
+        },
+        "classifier": {
+            "hidden_layers": [
+                64,
+                32
+            ],
+            "dropout_rates": [
+                0.3,
+                0.2
+            ]
+        },
+        "metrics": {
+            "precision": 0.8386496544391282,
+            "recall": 0.6546391752577319,
+            "f1": 0.7217068645640075,
+            "mcc": 0.707074346185498,
+            "auc": 0.9700875706580088
+        },
+        "training_time": 6.077242851257324
+    },
+    {
+        "config_id": 17,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 128,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 32,
+            "attention_dim": 64,
+            "hidden_dim": 128
+        },
+        "classifier": {
+            "hidden_layers": [
+                128,
+                64
+            ],
+            "dropout_rates": [
+                0.4,
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.6578844652615145,
+            "recall": 0.8402061855670103,
+            "f1": 0.7379036386346418,
+            "mcc": 0.7083818359380847,
+            "auc": 0.9671707045751465
+        },
+        "training_time": 4.920503854751587
+    },
+    {
+        "config_id": 18,
+        "semantic": {
+            "conv1_filters": 16,
+            "conv2_filters": 32,
+            "lstm_hidden": 32,
+            "output_features": 128,
+            "kernel_size": 5
+        },
+        "structural": {
+            "output_features": 32,
+            "attention_dim": 64,
+            "hidden_dim": 128
+        },
+        "classifier": {
+            "hidden_layers": [
+                64
+            ],
+            "dropout_rates": [
+                0.3
+            ]
+        },
+        "metrics": {
+            "precision": 0.7681055646481179,
+            "recall": 0.7835051546391752,
+            "f1": 0.7752337787502279,
+            "mcc": 0.7479689929817637,
+            "auc": 0.9685159554514998
+        },
+        "training_time": 5.926076650619507
+    }
+]

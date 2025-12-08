@@ -168,7 +168,7 @@ def train_model(model: nn.Module, train_loader, val_loader, criterion, optimizer
             
             save_path = os.path.join(save_dir, 'best_model.pth')
             torch.save(checkpoint, save_path)
-            print(f"✓ Saved best model with F1: {best_val_f1:.4f}")
+            print(f"[OK] Saved best model with F1: {best_val_f1:.4f}")
         else:
             patience_counter += 1
             print(f"No improvement. Patience: {patience_counter}/{early_stopping_patience}")
@@ -199,9 +199,8 @@ def save_checkpoint(model: nn.Module, optimizer, epoch: int, metrics: Dict,
         'metrics': metrics
     }
     torch.save(checkpoint, save_path)
-    print(f"✓ Checkpoint saved to {save_path}")
-
-
+    
+    print(f"[OK] Checkpoint saved to {save_path}")
 def load_checkpoint(model: nn.Module, checkpoint_path: str, device):
     """
     Load model checkpoint
@@ -216,7 +215,7 @@ def load_checkpoint(model: nn.Module, checkpoint_path: str, device):
     """
     checkpoint = torch.load(checkpoint_path, map_location=device)
     model.load_state_dict(checkpoint['model_state_dict'])
-    print(f"✓ Model loaded from {checkpoint_path}")
+    print(f"[OK] Model loaded from {checkpoint_path}")
     print(f"  Epoch: {checkpoint['epoch']}")
     if 'metrics' in checkpoint:
         print(f"  Metrics: {checkpoint['metrics']}")
