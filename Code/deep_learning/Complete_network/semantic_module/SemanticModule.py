@@ -13,10 +13,7 @@ if complete_network_dir not in sys.path:
 from semantic_module.AttentionLayer import AttentionLayer
 
 class SEBlock(nn.Module):
-    """
-    Squeeze-and-Excitation Block
-    Adaptive feature recalibration: explicitly models interdependencies between channels.
-    """
+    """Squeeze-and-Excitation Block"""
     def __init__(self, channel, reduction=4):
         super().__init__()
         self.avg_pool = nn.AdaptiveAvgPool1d(1)
@@ -35,70 +32,64 @@ class SEBlock(nn.Module):
 
 class SemanticModule(nn.Module):
     '''
-    CNN-BiLSTM Architecture with SE-Blocks and Multi-Head Attention
+    CNN-Transformer Architecture
+    Replaces LSTM with Transformer Encoder for better long-range dependency capture.
     '''
     def __init__(self, embedding_dim, output_features=100):
         super().__init__()
         
-        # Block 1
-        self.conv1 = nn.Conv1d(in_channels=1, out_channels=16, kernel_size=5, padding=2)
-        self.bn1 = nn.BatchNorm1d(16)
-        self.se1 = SEBlock(channel=16) # NEW: SE Block
+        # --- CNN Block (Local Feature Extraction) ---
+        self.conv1 = nn.Conv1d(in_channels=1, out_channels=32, kernel_size=5, padding=2)
+        self.bn1 = nn.BatchNorm1d(32)
+        self.se1 = SEBlock(channel=32)
         self.pool1 = nn.MaxPool1d(kernel_size=3)
         
-        # Block 2
-        self.conv2 = nn.Conv1d(in_channels=16, out_channels=32, kernel_size=5, padding=2)
-        self.bn2 = nn.BatchNorm1d(32)
-        self.se2 = SEBlock(channel=32) # NEW: SE Block
+        self.conv2 = nn.Conv1d(in_channels=32, out_channels=64, kernel_size=5, padding=2)
+        self.bn2 = nn.BatchNorm1d(64)
+        self.se2 = SEBlock(channel=64)
         self.pool2 = nn.MaxPool1d(kernel_size=3)
         
-        # Bidirectional LSTM
-        self.lstm = nn.LSTM(
-            input_size=32, 
-            hidden_size=32, 
-            num_layers=1,
-            batch_first=True,
-            bidirectional=True
+        # --- Transformer Block (Global Context) ---
+        # d_model must match conv2 out_channels (64)
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=64, 
+            nhead=4, 
+            dim_feedforward=256, 
+            dropout=0.2, 
+            batch_first=True
         )
+        self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=2)
         
-        # NEW: Multi-Head Attention Layer
-        # Input size is 64 (32 hidden * 2 directions)
+        # --- Attention Pooling ---
         self.attention = AttentionLayer(embed_size=64, num_heads=4)
         
-        # Final projection
+        # Final Projection
         self.fc = nn.Linear(64, output_features)
         
         self.attention_weights = None
         
     def forward(self, x):
-        # x shape: (batch, embedding_dim) -> unsqueeze for conv1d: (batch, 1, embedding_dim)
+        # x: (batch, embedding_dim)
         x = x.unsqueeze(1) 
         
-        # Conv Block 1
-        x = self.conv1(x)
-        x = F.relu(x)
-        x = self.bn1(x)
-        x = self.se1(x) # Apply SE Attention
-        x = self.pool1(x)
+        # CNN Layers
+        x = self.pool1(self.se1(self.bn1(F.relu(self.conv1(x)))))
+        x = self.pool2(self.se2(self.bn2(F.relu(self.conv2(x)))))
         
-        # Conv Block 2
-        x = self.conv2(x)
-        x = F.relu(x)
-        x = self.bn2(x)
-        x = self.se2(x) # Apply SE Attention
-        x = self.pool2(x)
-        
-        # Prepare for LSTM: (batch, channels, seq_len) -> (batch, seq_len, channels)
+        # Prepare for Transformer: (batch, channels, seq) -> (batch, seq, channels)
         x = x.transpose(1, 2)
         
-        # LSTM
-        lstm_out, _ = self.lstm(x)
+        # Transformer Encoder
+        # No positional encoding needed as CNN preserves relative order locally
+        # and we want translation invariance for code patterns.
+        trans_out = self.transformer(x)
         
-        # Multi-Head Attention
-        attended_output, attention_weights = self.attention(lstm_out)
+        # Attention Pooling
+        attended_output, attention_weights = self.attention(trans_out)
         self.attention_weights = attention_weights
         
-        # Final Projection
+        # Final Features
         features = self.fc(attended_output)
         
-        return features, attention_weights
+        # Return both the pooled features AND the full sequence (for Cross-Attention Fusion)
+        return features, attention_weights, trans_out

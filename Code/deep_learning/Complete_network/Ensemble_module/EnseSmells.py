@@ -3,6 +3,7 @@ import torch.nn as nn
 import sys
 import os
 import torch.nn.functional as F
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 complete_network_dir = os.path.dirname(current_dir)
 if complete_network_dir not in sys.path:
@@ -11,56 +12,66 @@ if complete_network_dir not in sys.path:
 from semantic_module.SemanticModule import SemanticModule
 from structural_module.StructuralModule import StructuralModule
 
-class GatedFusion(nn.Module):
+class CrossModalAttentionFusion(nn.Module):
     """
-    Intelligent fusion of two modalities (Code + Metrics).
-    Learns to weigh each branch dynamically per sample.
+    Advanced Fusion: Uses Metrics to 'attend' to specific parts of the Code.
+    Query = Metrics Vector
+    Key/Value = Code Sequence
     """
-    def __init__(self, dim_a, dim_b, hidden_dim):
+    def __init__(self, semantic_dim, structural_dim, fused_dim):
         super().__init__()
-        # Project both inputs to the same hidden dimension
-        self.project_a = nn.Linear(dim_a, hidden_dim)
-        self.project_b = nn.Linear(dim_b, hidden_dim)
         
-        # The Gate Network: Decides 'z' (weight 0 to 1) based on concatenated inputs
-        self.gate_net = nn.Sequential(
-            nn.Linear(dim_a + dim_b, hidden_dim),
-            nn.ReLU(),
-            nn.Linear(hidden_dim, 1),
-            nn.Sigmoid()
-        )
+        # Project metrics to match semantic dimension for attention
+        self.metric_proj = nn.Linear(structural_dim, semantic_dim)
         
-    def forward(self, a, b):
-        # a: Semantic features (100)
-        # b: Structural features (24)
+        # Cross Attention
+        self.cross_attn = nn.MultiheadAttention(embed_dim=semantic_dim, num_heads=4, batch_first=True)
+        self.norm = nn.LayerNorm(semantic_dim)
         
-        h_a = F.relu(self.project_a(a)) # shape: (batch, hidden_dim)
-        h_b = F.relu(self.project_b(b)) # shape: (batch, hidden_dim)
+        # Final fusion layer
+        self.fusion_fc = nn.Linear(semantic_dim + structural_dim, fused_dim)
         
-        # Calculate Gate z
-        # Concatenate raw inputs to decide weights
-        cat_inputs = torch.cat([a, b], dim=1)
-        z = self.gate_net(cat_inputs) # shape: (batch, 1)
+    def forward(self, code_seq, metrics_vec):
+        # code_seq: (batch, seq_len, semantic_dim) -> From Transformer
+        # metrics_vec: (batch, structural_dim)
         
-        # Weighted combination: z * A + (1-z) * B
-        fused = z * h_a + (1 - z) * h_b
+        # 1. Prepare Query (Metrics)
+        # Reshape metrics to (batch, 1, semantic_dim) to act as a sequence of length 1
+        query = self.metric_proj(metrics_vec).unsqueeze(1)
         
+        # 2. Prepare Key/Value (Code)
+        key = code_seq
+        value = code_seq
+        
+        # 3. Perform Attention
+        # "Which parts of the code are relevant given these metrics?"
+        attn_output, _ = self.cross_attn(query, key, value)
+        
+        # attn_output is (batch, 1, semantic_dim). Squeeze to (batch, semantic_dim)
+        context_code = attn_output.squeeze(1)
+        context_code = self.norm(context_code)
+        
+        # 4. Concatenate Original Metrics with Context-Aware Code
+        combined = torch.cat([context_code, metrics_vec], dim=1)
+        
+        # 5. Fuse
+        fused = F.relu(self.fusion_fc(combined))
         return fused
 
 class EnseSmells(nn.Module):
     '''
-    Ensemble Model with Gated Fusion
+    Ensemble Model with Transformer Backbone and Cross-Modal Attention
     '''
     def __init__(self, embedding_dim, input_metrics):
         super().__init__()
         
-        # 1. Semantic Branch (Code)
+        # 1. Semantic Branch (Outputting 64 dim sequence)
         self.semantic = SemanticModule(
             embedding_dim=embedding_dim,
-            output_features=100
+            output_features=100 # Kept for compatibility, but we use the sequence mostly
         )
         
-        # 2. Structural Branch (Metrics)
+        # 2. Structural Branch
         self.structural = StructuralModule(
             input_metrics=input_metrics,
             output_features=24,
@@ -68,9 +79,10 @@ class EnseSmells(nn.Module):
             hidden_layer_dim=64
         )
         
-        # 3. Gated Fusion
-        # Fuses 100 (Semantic) + 24 (Structural) -> 64 fused features
-        self.fusion = GatedFusion(dim_a=100, dim_b=24, hidden_dim=64)
+        # 3. Cross-Modal Fusion
+        # Semantic Dim = 64 (from Transformer in SemanticModule)
+        # Structural Dim = 24
+        self.fusion = CrossModalAttentionFusion(semantic_dim=64, structural_dim=24, fused_dim=64)
         
         # 4. Final Classifier
         self.classifier = nn.Sequential(
@@ -78,16 +90,18 @@ class EnseSmells(nn.Module):
             nn.ReLU(),
             nn.Dropout(0.3),
             nn.Linear(32, 1)
-            # No Sigmoid here if using BCEWithLogitsLoss
         )
     
     def forward(self, embeddings, metrics):
-        # Get features from both branches
-        sem_feat, sem_attn = self.semantic(embeddings)
+        # Semantic: Get the full sequence (trans_out) in addition to pooled features
+        # trans_out shape: (batch, seq_len, 64)
+        sem_feat, sem_attn, trans_out = self.semantic(embeddings)
+        
+        # Structural: Get metric features
         str_feat, str_attn = self.structural(metrics)
         
-        # Intelligent Fusion
-        fused_features = self.fusion(sem_feat, str_feat)
+        # Cross-Modal Fusion: Metrics attend to Code Sequence
+        fused_features = self.fusion(trans_out, str_feat)
         
         # Classification
         prediction = self.classifier(fused_features)
